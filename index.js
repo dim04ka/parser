@@ -162,8 +162,10 @@ async function start() {
 
 setInterval(()=> {
     start()
+    console.log('running')
 }, 3600000)
 
+console.log('Server running on')
 
 
 
