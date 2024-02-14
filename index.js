@@ -1,3 +1,6 @@
+const express = require('express');
+
+const app = express();
 const axios = require('axios');
 const uuid = require('uuid');
 const puppeteer = require('puppeteer');
@@ -59,7 +62,7 @@ async function start() {
 
     await page.waitForSelector('#root > div.custom-modal-container.undefined > div > div.custom-modal-inner.fixed-mobile')
     await page.click('#root > div.custom-modal-container.undefined > div > div.custom-modal-inner.fixed-mobile > button');
-    await page.screenshot({path: 'example.png'});
+    // await page.screenshot({path: 'example.png'});
     const elements = await page.$$('div.row a.text-dark')
 
 
@@ -83,8 +86,8 @@ async function start() {
 
         const formattedDate = `${day}.${month}.${year}`;
 
-        if (time !== formattedDate) break;
-
+        // if (time !== formattedDate) break;
+        if (time === '12.02.2024') break;
         const href = await element.evaluate(el => el.href);
 
         const newPage = await browser.newPage();
@@ -159,11 +162,18 @@ async function start() {
 }
 
 
+const PORT = process.env.PORT || 8080;
 
-setInterval(()=> {
+
+
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
     start()
-    console.log('running')
-}, 3600000)
+    setInterval(()=> {
+        start()
+        console.log('running')
+    }, 100000)
+})
 
 console.log('Server running on')
 
