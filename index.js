@@ -87,7 +87,7 @@ async function start() {
         const formattedDate = `${day}.${month}.${year}`;
 
         // if (time !== formattedDate) break;
-        if (time === '12.02.2024') break;
+        if (time === '19.02.2024') break;
         const href = await element.evaluate(el => el.href);
 
         const newPage = await browser.newPage();
@@ -122,6 +122,7 @@ async function start() {
 
             data.push({phone, title, description: description || '', image, price, date, id})
         }
+        console.log('data====', data)
         await newPage.close();
     }
 
@@ -167,7 +168,8 @@ const PORT = process.env.PORT || 3000;
 
 
 
-app.get('/', (req, res) => {
+app.get('/', async (req, res) => {
+    await start();
     res.send('Hello World!111111')
 })
 
@@ -175,10 +177,10 @@ app.get('/', (req, res) => {
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
     // start()
-    setInterval(()=> {
-        start()
-        console.log('running')
-    }, 100000)
+    // setInterval(()=> {
+    //     start()
+    //     console.log('running')
+    // }, 100000)
 })
 
 console.log('Server running on')
