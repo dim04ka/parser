@@ -182,6 +182,14 @@ const PORT = process.env.PORT || 3000;
 
 const scrapeLogic = async (res) => {
     let transactionsArray = []
+    const osPlatform = os.platform(); // possible values are: 'darwin', 'freebsd', 'linux', 'sunos' or 'win32'
+    console.log('Scraper running on platform: ', osPlatform);
+    let executablePath;
+    if (/^win/i.test(osPlatform)) {
+        executablePath = '';
+    } else if (/^linux/i.test(osPlatform)) {
+        executablePath = '/usr/bin/google-chrome';
+    }
     const browser = await puppeteer.launch({
         headless: false,
         args: [
@@ -191,11 +199,7 @@ const scrapeLogic = async (res) => {
             "--single-process",
             "--no-zygote",
         ],
-        executablePath:
-          process.env.NODE_ENV === "production"
-            ? process.env.PUPPETEER_EXECUTABLE_PATH
-            : puppeteer.executablePath(),
-    });
+        executablePath: executablePath});
     try {
         const page = await browser.newPage();
         await page.goto('https://www.myparts.ge/ka/search/?pr_type_id=3&page=1&cat_id=765');
